@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM frolvlad/alpine-oraclejdk8:latest
 
 RUN adduser -h /home/bundle -D bundle && \
     mkdir -p /home/bundle && \
@@ -6,16 +6,13 @@ RUN adduser -h /home/bundle -D bundle && \
 
 WORKDIR /home/bundle
 
-RUN apk -U add bash curl git openjdk7-jre nodejs python make g++ linux-headers
-RUN curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && \
-    chmod +x boot && \
-    mv boot /usr/local/bin
-RUN npm install --global yarn
-RUN git clone https://github.com/anmonteiro/lumo.git && \
-    cd lumo && \
-    BOOT_AS_ROOT=yes boot release; echo 0 && \
-    mv build/lumo /usr/local/bin && \
-    rm -rf /home/bundle/lumo
+RUN apk -U add ca-certificates wget unzip libstdc++ && \
+    wget https://github.com/anmonteiro/lumo/releases/download/1.0.0-alpha2/lumo_linux64.zip && \
+    unzip lumo_linux64.zip && \
+    mv lumo /usr/bin/ && \
+    rm lumo_linux64.zip && \
+    apk del ca-certificates wget unzip && \
+    rm -f /var/cache/apk/*
 
 COPY cljs-echo.cljs cljs-echo.sh /home/bundle/
 
