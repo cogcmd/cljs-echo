@@ -1,0 +1,17 @@
+---
+cog_bundle_version: 4
+name: "cljs-echo"
+description: "Echo from ClojureScript"
+author: "Patrick <patrick@operable.io>"
+homepage: "https://github.com/cogcmd/cljs-echo"
+version: "0.1.0"
+docker:
+  image: "cogcmd/cljs-echo"
+  tag: "0.1.0"
+commands:
+  cljs-echo:
+    executable: "/home/bundle/cljs-echo.sh"
+    description: "Echo from ClojureScript"
+    arguments: "[args ...]"
+    rules:
+      - "allow"
